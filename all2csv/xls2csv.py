@@ -5,14 +5,14 @@ def convert_xls_to_csv(xls_path: str, output_dir: str):
     if not os.path.exists(xls_path):
         raise FileNotFoundError(f"File not found: {xls_path}")
 
-    # 讀取 Excel（.xls）
+
     excel_file = pd.ExcelFile(xls_path, engine="xlrd")
     print(f"Found sheets: {excel_file.sheet_names}")
 
     for sheet in excel_file.sheet_names:
         df = excel_file.parse(sheet)
         
-        # 處理 Unnamed 列標題問題:將所有 "Unnamed: X" 形式的列名替換為空字串
+
         new_columns = []
         for col in df.columns:
             col_str = str(col)
