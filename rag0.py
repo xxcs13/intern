@@ -11,7 +11,7 @@ from langchain.schema.document import Document
 
 from langgraph.graph import StateGraph, END
 
-# 1. 定義 GraphState (推薦 immutable dataclass)
+
 from dataclasses import dataclass, field
 
 @dataclass
@@ -22,12 +22,12 @@ class GraphState:
     retrieved_docs: List[Document] = field(default_factory=list)
     answer: str = ""
 
-# 2. 讀取 .env
+
 load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
 assert openai_api_key, "請在 .env 設定 OPENAI_API_KEY"
 
-# 3. 檔案解析為 Document
+
 def parse_pdf(path: str) -> List[Document]:
     docs = []
     with pdfplumber.open(path) as pdf:
@@ -75,9 +75,9 @@ def parse_xls(path: str) -> List[Document]:
                 ))
     return docs
 
-# 4. 各步驟 node
+
 def ingest_node(state: GraphState) -> GraphState:
-    # 解析所有檔案
+
     pdf_docs = parse_pdf(state.docs[0])   # state.docs[0] 是 pdf_path
     pptx_docs = parse_pptx(state.docs[1]) # state.docs[1] 是 pptx_path
     xls_docs = parse_xls(state.docs[2])   # state.docs[2] 是 xls_path
@@ -143,7 +143,6 @@ def log_node(state: GraphState) -> GraphState:
         df.to_csv("rag_qa_log.csv", mode="a", header=False, index=False)
     return state
 
-# 5. LangGraph workflow
 workflow = StateGraph(GraphState)
 workflow.add_node("ingest", ingest_node)
 workflow.add_node("embed", embed_node)
@@ -159,7 +158,7 @@ workflow.connect("rag", "log")
 workflow.connect("log", END)
 graph = workflow.compile()
 
-# 6. 執行：將檔案路徑塞進 state.docs (依順序 PDF, PPTX, XLS)
+
 if __name__ == "__main__":
 
     PDF_PATH = "./tsmc_2024_yearly report.pdf"
