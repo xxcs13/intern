@@ -48,10 +48,10 @@ def extract_pdf_tables_to_csv(
     out_dir = Path(output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     
-    print(f"📄 Extracting tables from: {pdf_path}")
-    print(f"📁 Output directory: {out_dir}")
-    print(f"📖 Pages: {pages}")
-    print(f"🔧 Flavor: {flavor}")
+    print(f"Extracting tables from: {pdf_path}")
+    print(f"Output directory: {out_dir}")
+    print(f"Pages: {pages}")
+    print(f"Flavor: {flavor}")
     print("-" * 50)
     
     try:
@@ -62,11 +62,11 @@ def extract_pdf_tables_to_csv(
             flavor=flavor,
         )
         
-        print(f"✅ Found {len(tables)} tables")
+        print(f"Found {len(tables)} tables")
         
         if len(tables) == 0:
-            print("❌ No tables found in the PDF.")
-            print("💡 Tips:")
+            print("No tables found in the PDF.")
+            print(" Tips:")
             print("   - Try using flavor='lattice' instead of 'stream'")
             print("   - Check if the PDF contains actual tables (not just images)")
             print("   - Verify the page numbers are correct")
@@ -84,7 +84,7 @@ def extract_pdf_tables_to_csv(
             csv_paths.append(csv_path)
             
             # Print table info
-            print(f"📊 Table {i} (Page {table.page}):")
+            print(f"Table {i} (Page {table.page}):")
             print(f"   - Shape: {table.shape} (rows x columns)")
             print(f"   - Accuracy: {table.accuracy:.2f}%")
             print(f"   - Saved to: {csv_path}")
@@ -93,8 +93,8 @@ def extract_pdf_tables_to_csv(
         return csv_paths
         
     except Exception as e:
-        print(f"❌ Error extracting tables: {e}")
-        print("\n🔧 Troubleshooting:")
+        print(f" Error extracting tables: {e}")
+        print("\n Troubleshooting:")
         print("1. Make sure ghostscript is installed on your system")
         print("2. Try different 'flavor' parameter ('lattice' or 'stream')")
         print("3. Check if the PDF is not password protected")
@@ -104,7 +104,7 @@ def extract_pdf_tables_to_csv(
 
 def test_single_page(pdf_path: str, page_num: int = 12):
     """Test extraction on a single page first."""
-    print(f"🧪 Testing extraction on page {page_num}...")
+    print(f" Testing extraction on page {page_num}...")
     
     csv_files = extract_pdf_tables_to_csv(
         pdf_path=pdf_path,
@@ -114,12 +114,12 @@ def test_single_page(pdf_path: str, page_num: int = 12):
     )
     
     if csv_files:
-        print(f"✅ Successfully extracted {len(csv_files)} tables from page {page_num}")
+        print(f" Successfully extracted {len(csv_files)} tables from page {page_num}")
         return True
     else:
-        print(f"❌ No tables found on page {page_num}")
+        print(f" No tables found on page {page_num}")
         # Try with lattice flavor
-        print("🔄 Trying with 'lattice' flavor...")
+        print(" Trying with 'lattice' flavor...")
         csv_files = extract_pdf_tables_to_csv(
             pdf_path=pdf_path,
             output_dir="pdf",
@@ -128,10 +128,10 @@ def test_single_page(pdf_path: str, page_num: int = 12):
         )
         
         if csv_files:
-            print(f"✅ Successfully extracted {len(csv_files)} tables from page {page_num} using lattice flavor")
+            print(f"Successfully extracted {len(csv_files)} tables from page {page_num} using lattice flavor")
             return True
         else:
-            print(f"❌ Still no tables found on page {page_num}")
+            print(f" Still no tables found on page {page_num}")
             return False
 
 
@@ -144,13 +144,13 @@ def main():
     
     # Check if PDF exists
     if not Path(pdf_path).exists():
-        print(f"❌ PDF file not found: {pdf_path}")
-        print("📁 Available PDF files in current directory:")
+        print(f" PDF file not found: {pdf_path}")
+        print("Available PDF files in current directory:")
         for file in Path(".").glob("*.pdf"):
             print(f"   - {file}")
         return
     
-    print("🚀 PDF Table Extraction Tool")
+    print(" PDF Table Extraction Tool")
     print("=" * 50)
     
     # Test extraction on single page first
@@ -158,9 +158,9 @@ def main():
     
     if success:
         print("\n" + "=" * 50)
-        print("✅ Test successful! Now extracting from all pages...")
+        print(" Test successful! Now extracting from all pages...")
         
-        print("\n🔄 Extracting from all pages...")
+        print("\n Extracting from all pages...")
         all_csv_files = extract_pdf_tables_to_csv(
             pdf_path=pdf_path,
             output_dir="pdf",
@@ -168,11 +168,11 @@ def main():
             flavor="stream"  # Use the flavor that worked
         )
         
-        print(f"\n🎉 Extraction completed!")
-        print(f"📊 Total tables extracted: {len(all_csv_files)}")
-        print(f"📁 Files saved in: ./pdf/")
+        print(f"\n Extraction completed!")
+        print(f" Total tables extracted: {len(all_csv_files)}")
+        print(f" Files saved in: ./pdf/")
     else:
-        print("\n❌ Test failed. Please check the PDF file and try again.")
+        print("\n Test failed. Please check the PDF file and try again.")
 
 
 if __name__ == "__main__":
