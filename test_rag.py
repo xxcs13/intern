@@ -50,16 +50,16 @@ def test_rag_system():
             
             result = graph.invoke(state)
             print(f"Answer: {result['answer']}")
-            print(f"✅ Test {i} completed successfully!")
+            print(f"Test {i} completed successfully!")
             
         except Exception as e:
-            print(f"❌ Test {i} failed: {e}")
+            print(f" Test {i} failed: {e}")
             import traceback
             traceback.print_exc()
             return False
     
     print(f"\n{'='*60}")
-    print("🎉 All tests completed! Check 'rag_qa_log.csv' for logged Q&A sessions.")
+    print(" All tests completed! Check 'rag_qa_log.csv' for logged Q&A sessions.")
     print('='*60)
     return True
 
